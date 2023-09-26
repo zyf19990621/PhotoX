@@ -9,9 +9,34 @@ import SwiftUI
 
 @main
 struct PhotoXApp: App {
+    @StateObject private var model = DataModel()
+    
+    init() {
+        UINavigationBar.applyCustomAppearance()
+    }
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            PhotoCollectionView(photoCollection: model.photoCollection)
+                .task {
+                    await model.loadPhotos()
+                }
         }
+    }
+}
+
+fileprivate extension UINavigationBar {
+    static func applyCustomAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(dynamicProvider: { trait in
+            trait.userInterfaceStyle == .light ? UIColor(hex: 0xffffff) : UIColor(hex: 0x1a1a1a)
+        })
+        
+        appearance.titleTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 19)]
+        appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().compactAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
 }
