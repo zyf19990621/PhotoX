@@ -31,14 +31,16 @@ struct PhotoCollectionView: View {
         NavigationStack {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: Self.itemSpacing) {
-                    ForEach(photoCollection.photoAssets) {  asset in
-                        NavigationLink {
-                            PhotoView(photoCollection: photoCollection, asset: asset, cache: photoCollection.cache, index: photoCollection.photoAssets.firstIndex(of: asset) ?? 0)
-                        } label: {
-                            photoItemView(asset: asset)
+                    ForEach(photoCollection.photoAssets) { asset in
+                        if !asset.isTrash {
+                            NavigationLink {
+                                PhotoView(photoCollection: photoCollection, asset: asset, cache: photoCollection.cache, index: asset.index ?? 0)
+                            } label: {
+                                photoItemView(asset: asset)
+                            }
+                            .buttonStyle(.borderless)
+                            .accessibilityLabel(asset.accessibilityLabel)
                         }
-                        .buttonStyle(.borderless)
-                        .accessibilityLabel(asset.accessibilityLabel)
                     }
                 }
                 .padding([.vertical], Self.itemSpacing)

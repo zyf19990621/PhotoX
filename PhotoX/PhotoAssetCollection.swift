@@ -36,6 +36,17 @@ class PhotoAssetCollection: RandomAccessCollection {
         }
         return assets
     }
+    
+    func putTrash(at position: Int) {
+        if var asset = cache[position] {
+            asset.isTrash = true
+            cache[position] = asset
+            return
+        }
+        var asset = PhotoAsset(phAsset: fetchResult.object(at: position), index: position)
+        asset.isTrash = true
+        cache[position] = asset
+    }
 }
 
 extension PhotoAssetCollection: Sequence, IteratorProtocol {

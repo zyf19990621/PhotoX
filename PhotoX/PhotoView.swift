@@ -12,11 +12,13 @@ struct PhotoView: View {
     @ObservedObject var photoCollection : PhotoCollection
     @State var asset: PhotoAsset
     var cache: CachedImageManager?
-    @State var index: Int
     @State private var image: Image?
     @State private var imageRequestID: PHImageRequestID?
     @Environment(\.dismiss) var dismiss
     private let imageSize = CGSize(width: 1024, height: 1024)
+    
+    /// 所展示图片在collection中位置
+    @State var index: Int
     
     @State private var dragOffset = CGSize.zero
     @State private var dragHorizontal = false
@@ -52,26 +54,23 @@ struct PhotoView: View {
                 }
             })
             .onEnded { value in
-                print(value.translation)
-                if dragHorizontal && value.translation.width < -60 {
-                    print("left swipe")
+                correctPosition()
+                if dragHorizontal && value.translation.width < -60 { //从右往左轻扫
                     Task {
                         await showNextPhoto()
                     }
-                } else if dragHorizontal && value.translation.width > 60 {
-                    print("right swipe")
+                } else if dragHorizontal && value.translation.width > 60 { //从左往右
                     Task {
                         await showPrevPhoto()
                     }
-                } else if dragVertical && value.translation.height < -60 {
-                    print("up swipe")
+                } else if dragVertical && value.translation.height < -60 { //自下而上滑动
                     Task {
                         await photoCollection.deleteImage(asset)
-                        await reloadPhoto()
+                        await showNextPhoto()
                     }
-                } else if dragVertical && value.translation.height > 60 {
-                    print("down swipe")
-                } else { print("no clue") }
+                } else if dragVertical && value.translation.height > 60 { //自上而下
+                    
+                } else { }
                 dragOffset = .zero
                 dragHorizontal = false
                 dragVertical = false
@@ -148,11 +147,21 @@ struct PhotoView: View {
     }
 }
 
-extension PhotoView {
+private extension PhotoView {
     func showPrevPhoto() async {
         guard let cache = cache, index > 0 else { return }
-        index -= 1
-        asset = photoCollection.photoAssets[index]
+        let tempIndex = index
+        let tempAsset = asset
+        repeat {
+            index -= 1
+            asset = photoCollection.photoAssets[index]
+        } while asset.isTrash && index > 0
+        
+        guard !asset.isTrash else { //往前所有图片均放入“废纸篓”，则恢复index和asset为当前图片
+            index = tempIndex
+            asset = tempAsset
+            return
+        }
         imageRequestID = await cache.requestImage(for: asset, targetSize: imageSize) { result in
             Task {
                 if let result = result {
@@ -163,9 +172,20 @@ extension PhotoView {
     }
     
     func showNextPhoto() async {
-        guard let cache = cache, index < photoCollection.photoAssets.count - 1 else { return }
-        index += 1
-        asset = photoCollection.photoAssets[index]
+        guard let cache = cache else { return }
+        //TODO: 展示占位图“没有更多照片”
+        guard index < photoCollection.photoAssets.count - 1 else { return }
+        let tempIndex = index
+        let tempAsset = asset
+        repeat {
+            index += 1
+            asset = photoCollection.photoAssets[index]
+        } while asset.isTrash && index < photoCollection.photoAssets.count - 1
+        guard !asset.isTrash else { //展示占位图“没有更多照片”，index还原
+            index = tempIndex
+            asset = tempAsset
+            return
+        }
         imageRequestID = await cache.requestImage(for: asset, targetSize: imageSize) { result in
             Task {
                 if let result = result {
@@ -185,6 +205,12 @@ extension PhotoView {
                 }
             }
         }
+    }
+    
+    func correctPosition() {
+        guard let currentIndex = photoCollection.photoAssets.firstIndex(of: asset),
+              currentIndex != index else { return }
+        index = currentIndex
     }
 }
 

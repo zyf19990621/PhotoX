@@ -13,6 +13,7 @@ struct PhotoAsset: Identifiable {
     var identifier: String = UUID().uuidString
     var index: Int?
     var phAsset: PHAsset?
+    var isTrash: Bool = false
     
     typealias MediaType = PHAssetMediaType
     

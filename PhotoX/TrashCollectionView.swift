@@ -31,7 +31,7 @@ struct TrashCollectionView: View {
         NavigationStack {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: Self.itemSpacing) {
-                    ForEach(photoCollection.trashPhotoAssets) {  asset in
+                    ForEach(photoCollection.trashPhotoAssets) { asset in
                         photoItemView(asset: asset)
                         .buttonStyle(.borderless)
                         .accessibilityLabel(asset.accessibilityLabel)
@@ -43,7 +43,6 @@ struct TrashCollectionView: View {
                 trait.userInterfaceStyle == .light ? UIColor(hex: 0xF7F7F7) : UIColor(hex: 0x0A0A0A)
             })))
             .navigationTitle(photoCollection.albumName ?? "废纸篓")
-//            .toolbarBackground(.red, for: .navigationBar)
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden()
             .toolbar(content: {
@@ -58,7 +57,18 @@ struct TrashCollectionView: View {
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("全部删除", role: .destructive) {
+                    Button("恢复", role: .destructive) {
+                        Task {
+                            await photoCollection.revertAllTrash()
+                            await MainActor.run {
+                                dismiss()
+                            }
+                        }
+                    }
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("删除", role: .destructive) {
                         Task {
                             await photoCollection.deleteAllTrashPhotos()
                             await MainActor.run {
