@@ -37,7 +37,7 @@ class PhotoAssetCollection: RandomAccessCollection {
         return assets
     }
     
-    func putTrash(at position: Int) {
+    func putInTrash(at position: Int) {
         if var asset = cache[position] {
             asset.isTrash = true
             cache[position] = asset
@@ -45,6 +45,17 @@ class PhotoAssetCollection: RandomAccessCollection {
         }
         var asset = PhotoAsset(phAsset: fetchResult.object(at: position), index: position)
         asset.isTrash = true
+        cache[position] = asset
+    }
+    
+    func outOfTrash(at position: Int) {
+        if var asset = cache[position] {
+            asset.isTrash = false
+            cache[position] = asset
+            return
+        }
+        var asset = PhotoAsset(phAsset: fetchResult.object(at: position), index: position)
+        asset.isTrash = false
         cache[position] = asset
     }
 }

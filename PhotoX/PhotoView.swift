@@ -15,6 +15,7 @@ struct PhotoView: View {
     @State private var image: Image?
     @State private var imageRequestID: PHImageRequestID?
     @Environment(\.dismiss) var dismiss
+    @Environment(\.undoManager) var undoManager
     private let imageSize = CGSize(width: 1024, height: 1024)
     
     /// 所展示图片在collection中位置
@@ -67,6 +68,12 @@ struct PhotoView: View {
                     Task {
                         await photoCollection.deleteImage(asset)
                         await showNextPhoto()
+                        undoManager?.registerUndo(withTarget: photoCollection, handler: { photoCollection in
+                            Task {
+                                await photoCollection.revertLastTrash()
+                                await self.showPrevPhoto()
+                            }
+                        })
                     }
                 } else if dragVertical && value.translation.height > 60 { //自上而下
                     
@@ -87,6 +94,15 @@ struct PhotoView: View {
                 } label: {
                     Label("Delete", systemImage: "chevron.left")
                         .font(.system(size: 17, weight: .medium))
+                        .foregroundColor(Color.primary)
+                }
+            }
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    undoManager?.undo()
+                } label: {
+                    Label("Delete", systemImage: "arrow.counterclockwise.circle")
+                        .font(.system(size: 18, weight: .medium))
                         .foregroundColor(Color.primary)
                 }
             }

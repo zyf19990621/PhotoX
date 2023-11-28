@@ -271,7 +271,7 @@ extension PhotoCollection {
               !trashPHAssets.contains(phAsset),
               let index = photoAssets.firstIndex(of: asset) else { return }
         trashPHAssets.append(phAsset)
-        photoAssets.putTrash(at: index)
+        photoAssets.putInTrash(at: index)
         
         await refreshTrashPhotoAssets()
 //        await refreshPhotoAssets()
@@ -295,6 +295,14 @@ extension PhotoCollection {
         self.trashPHAssets = []
         await refreshTrashPhotoAssets()
         await loadPhotoAssets()
+    }
+    
+    func revertLastTrash() async {
+        guard !trashPHAssets.isEmpty else { return }
+        let last = trashPHAssets.removeLast()
+        guard let index = photoAssets.phAssets.firstIndex(of: last) else { return }
+        photoAssets.outOfTrash(at: index)
+        await refreshTrashPhotoAssets()
     }
     
     private func refreshTrashPhotoAssets() async {
