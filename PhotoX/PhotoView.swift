@@ -59,10 +59,22 @@ struct PhotoView: View {
                 if dragHorizontal && value.translation.width < -60 { //从右往左轻扫
                     Task {
                         await showNextPhoto()
+                        guard index < photoCollection.photoAssets.count - 1 else { return }
+                        undoManager?.registerUndo(withTarget: photoCollection, handler: { photoCollection in
+                            Task {
+                                await self.showPrevPhoto()
+                            }
+                        })
                     }
                 } else if dragHorizontal && value.translation.width > 60 { //从左往右
                     Task {
                         await showPrevPhoto()
+                        guard index > 0 else { return }
+                        undoManager?.registerUndo(withTarget: photoCollection, handler: { photoCollection in
+                            Task {
+                                await self.showNextPhoto()
+                            }
+                        })
                     }
                 } else if dragVertical && value.translation.height < -60 { //自下而上滑动
                     Task {
@@ -137,6 +149,7 @@ struct PhotoView: View {
             Button {
                 Task {
                     await asset.setIsFavorite(!asset.isFavorite)
+//                    await reloadPhoto()
                 }
             } label: {
                 Label("Favorite", systemImage: asset.isFavorite ? "heart.fill" : "heart")

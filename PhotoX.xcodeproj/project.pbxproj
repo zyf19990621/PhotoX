@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A1612D72B174C6A003A5977 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A1612D62B174C6A003A5977 /* Launch Screen.storyboard */; };
 		0AF600FF2AC2C45700C7EFCB /* PhotoXApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF600FE2AC2C45700C7EFCB /* PhotoXApp.swift */; };
 		0AF601032AC2C45900C7EFCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0AF601022AC2C45900C7EFCB /* Assets.xcassets */; };
 		0AF601062AC2C45900C7EFCB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0AF601052AC2C45900C7EFCB /* Preview Assets.xcassets */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A1612D62B174C6A003A5977 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		0AF600FB2AC2C45700C7EFCB /* PhotoX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AF600FE2AC2C45700C7EFCB /* PhotoXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoXApp.swift; sourceTree = "<group>"; };
 		0AF601022AC2C45900C7EFCB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				0AF601202AC2D03600C7EFCB /* Info.plist */,
+				0A1612D62B174C6A003A5977 /* Launch Screen.storyboard */,
 				0AF600FE2AC2C45700C7EFCB /* PhotoXApp.swift */,
 				0AF6010C2AC2C5C000C7EFCB /* CachedImageManager.swift */,
 				0AF6010E2AC2C6A200C7EFCB /* DataModel.swift */,
@@ -154,6 +157,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A1612D72B174C6A003A5977 /* Launch Screen.storyboard in Resources */,
 				0AF601062AC2C45900C7EFCB /* Preview Assets.xcassets in Resources */,
 				0AF601032AC2C45900C7EFCB /* Assets.xcassets in Resources */,
 			);
@@ -315,6 +319,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -348,6 +353,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				LD_RUNPATH_SEARCH_PATHS = (
