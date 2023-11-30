@@ -16,26 +16,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="TqY-To-jn4">
-                                <rect key="frame" x="0.0" y="-1" width="393" height="853"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="Yh2-Vk-2Xm">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                             </imageView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
+                        <viewLayoutGuide key="safeArea" id="STK-Sk-kUm"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="TqY-To-jn4" secondAttribute="bottom" id="ARH-oj-FCf"/>
-                            <constraint firstItem="TqY-To-jn4" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="-1" id="ITf-cQ-aYm"/>
-                            <constraint firstItem="TqY-To-jn4" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" id="jMr-uy-pmR"/>
-                            <constraint firstItem="TqY-To-jn4" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="rll-Lo-ngi"/>
+                            <constraint firstItem="Yh2-Vk-2Xm" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="3Nk-tb-Vj3"/>
+                            <constraint firstItem="Yh2-Vk-2Xm" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="FkB-iX-Z5p"/>
+                            <constraint firstItem="Yh2-Vk-2Xm" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="SQq-In-S3p"/>
+                            <constraint firstItem="Yh2-Vk-2Xm" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailing" id="wSD-WC-E5u"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52.671755725190835" y="374.64788732394368"/>
+            <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
     <resources>
-        <image name="Image" width="375" height="812"/>
+        <image name="Logo" width="375" height="812"/>
     </resources>
 </document>

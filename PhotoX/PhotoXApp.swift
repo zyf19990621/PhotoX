@@ -13,6 +13,8 @@ struct PhotoXApp: App {
     
     init() {
         UINavigationBar.applyCustomAppearance()
+        // 设置启动页展示时间
+        Thread.sleep(forTimeInterval: 3.0)
     }
     
     var body: some Scene {
