@@ -32,6 +32,7 @@ struct TrashCollectionView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: Self.itemSpacing) {
                     ForEach(photoCollection.trashPhotoAssets) { asset in
+                        
                         photoItemView(asset: asset)
                         .buttonStyle(.borderless)
                         .accessibilityLabel(asset.accessibilityLabel)
@@ -87,15 +88,24 @@ struct TrashCollectionView: View {
             .frame(width: Self.itemSize.width, height: Self.itemSize.height)
             .clipped()
             .cornerRadius(Self.itemCornerRadius)
-            .overlay(alignment: .bottomLeading) {
+            .mask({
                 if asset.isFavorite {
-                    Image(systemName: "heart.fill")
-                        .foregroundColor(.white)
+                    MaskView(bgColor: .black, alpha: 0.25)
+                } else {
+                    MaskView(bgColor: .black, alpha: 0)
+                }
+                
+            })
+            .overlay(alignment: .topTrailing) {
+                if asset.isFavorite {
+                    Image("checkmark.circle")
+                    .foregroundColor(.blue)
                         .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 1)
                         .font(.callout)
-                        .offset(x: 4, y: -4)
+                        .offset(x: -6, y: 6)
                 }
             }
+            
             .onAppear {
                 Task {
                     await photoCollection.cache.startCaching(for: [asset], targetSize: imageSize)

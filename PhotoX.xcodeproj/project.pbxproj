@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0AD1A9112B186E530009B682 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0AD1A9102B186E530009B682 /* Launch Screen.storyboard */; };
+		0AF4F47D2B188AE90008856C /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF4F47C2B188AE90008856C /* Tools.swift */; };
 		0AF600FF2AC2C45700C7EFCB /* PhotoXApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF600FE2AC2C45700C7EFCB /* PhotoXApp.swift */; };
 		0AF601032AC2C45900C7EFCB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0AF601022AC2C45900C7EFCB /* Assets.xcassets */; };
 		0AF601062AC2C45900C7EFCB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0AF601052AC2C45900C7EFCB /* Preview Assets.xcassets */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		0AD1A9102B186E530009B682 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		0AF4F47C2B188AE90008856C /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		0AF600FB2AC2C45700C7EFCB /* PhotoX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AF600FE2AC2C45700C7EFCB /* PhotoXApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoXApp.swift; sourceTree = "<group>"; };
 		0AF601022AC2C45900C7EFCB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 				0AF6011A2AC2C8CA00C7EFCB /* PhotoLibrary.swift */,
 				0AF6011C2AC2C91800C7EFCB /* PhotoView.swift */,
 				0AF6011E2AC2C95F00C7EFCB /* TrashCollectionView.swift */,
+				0AF4F47C2B188AE90008856C /* Tools.swift */,
 				0AF601022AC2C45900C7EFCB /* Assets.xcassets */,
 				0AF601042AC2C45900C7EFCB /* Preview Content */,
 			);
@@ -173,6 +176,7 @@
 				0AF601192AC2C88E00C7EFCB /* PhotoItemView.swift in Sources */,
 				0AF6011B2AC2C8CA00C7EFCB /* PhotoLibrary.swift in Sources */,
 				0AF601132AC2C77600C7EFCB /* PhotoAssetCollection.swift in Sources */,
+				0AF4F47D2B188AE90008856C /* Tools.swift in Sources */,
 				0AF601152AC2C7B500C7EFCB /* PhotoCollection.swift in Sources */,
 				0AF6011D2AC2C91800C7EFCB /* PhotoView.swift in Sources */,
 				0AF6010F2AC2C6A200C7EFCB /* DataModel.swift in Sources */,
@@ -329,9 +333,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zyf990621.photox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -363,9 +370,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.zyf990621.photox;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
