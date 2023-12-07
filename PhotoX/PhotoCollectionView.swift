@@ -34,7 +34,8 @@ struct PhotoCollectionView: View {
                     ForEach(photoCollection.photoAssets) { asset in
                         if !asset.isTrash {
                             NavigationLink {
-                                PhotoView(photoCollection: photoCollection, asset: asset, cache: photoCollection.cache, index: asset.index ?? 0)
+//                                PhotoCell(photoCollection: photoCollection, asset: asset, cache: photoCollection.cache, index: asset.index ?? 0)
+                                PhotoView(photoCollection: photoCollection, asset: asset, index: asset.index ?? 0, cache: photoCollection.cache)
                             } label: {
                                 photoItemView(asset: asset)
                             }

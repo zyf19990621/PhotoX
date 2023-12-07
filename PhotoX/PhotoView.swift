@@ -9,7 +9,135 @@ import SwiftUI
 import Photos
 
 struct PhotoView: View {
-    @ObservedObject var photoCollection : PhotoCollection
+    @ObservedObject var photoCollection: PhotoCollection
+    @State var asset: PhotoAsset
+    @State var index: Int
+    
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.undoManager) var undoManager
+    
+    var cache: CachedImageManager?
+    
+    
+    @State var currentIndex = 0
+    @GestureState var dragOffset: CGFloat = 0
+    
+    var body: some View {
+        GeometryReader { outerView in
+            HStack(alignment: .center, spacing: 0.0) {
+                    /*
+                     ForEach(photoCollection.photoAssets) { asset in
+                         if !asset.isTrash {
+                             NavigationLink {
+                                 PhotoCell(photoCollection: photoCollection, asset: asset, cache: photoCollection.cache, index: asset.index ?? 0)
+                             } label: {
+                                 photoItemView(asset: asset)
+                             }
+                             .buttonStyle(.borderless)
+                             .accessibilityLabel(asset.accessibilityLabel)
+                         }
+                     }
+                     */
+                ForEach(photoCollection.photoAssets) { asset in
+                    if !asset.isTrash {
+                        GeometryReader { _ in
+    //                            CardView(image: imageModels[index].image, imageName:imageModels[index].imageName)
+                            PhotoCell(photoCollection: photoCollection, asset: asset, cache: photoCollection.cache, index: asset.index ?? 0)
+                        }
+                        .padding(.horizontal, 20)
+                        .frame(width: outerView.size.width, height: outerView.size.height)
+                    }
+                }
+            }
+            .frame(width: outerView.size.width, height: outerView.size.height, alignment: .leading)
+            .offset(x: -CGFloat(self.currentIndex) * outerView.size.width)
+            .offset(x: self.dragOffset)
+//            .gesture(
+//                DragGesture()
+//                    .updating(self.$dragOffset, body: { value, state, transaction in
+//                        state = value.translation.width
+//                    })
+//                    .onEnded({ value in
+//                        let threshold = outerView.size.width * 0.65
+//                        var newIndex = Int(-value.translation.width / threshold) + self.currentIndex
+//                        newIndex = min(max(newIndex, 0), photoCollection.photoAssets.count - 1)
+//                        self.currentIndex = newIndex
+//                    })
+//            )
+        }
+        .ignoresSafeArea()
+        .navigationTitle("照片")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
+        .toolbar(content: {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Label("Delete", systemImage: "chevron.left")
+                        .font(.system(size: 17, weight: .medium))
+                        .foregroundColor(Color.primary)
+                }
+            }
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    undoManager?.undo()
+                } label: {
+                    Label("Delete", systemImage: "arrow.counterclockwise.circle")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundColor(Color.primary)
+                }
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink {
+                    TrashCollectionView(photoCollection: photoCollection)
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(Color.primary)
+                }
+            }
+        })
+        .overlay(alignment: .bottom) {
+            buttonsView()
+                .offset(x: 0, y: -50)
+        }
+    }
+    
+    private func buttonsView() -> some View {
+        HStack(spacing: 60) {
+            Button {
+                Task {
+                    await asset.setIsFavorite(!asset.isFavorite)
+//                    await reloadPhoto()
+                }
+            } label: {
+                Label("Favorite", systemImage: asset.isFavorite ? "heart.fill" : "heart")
+                    .font(.system(size: 24))
+            }
+
+            Button {
+                Task {
+                    await asset.delete()
+                    await MainActor.run {
+                        dismiss()
+                    }
+                }
+            } label: {
+                Label("Delete", systemImage: "trash")
+                    .font(.system(size: 24))
+            }
+        }
+        .buttonStyle(.plain)
+        .labelStyle(.iconOnly)
+        .padding(EdgeInsets(top: 20, leading: 30, bottom: 20, trailing: 30))
+        .background(Color.secondary.colorInvert())
+        .cornerRadius(15)
+    }
+}
+
+struct PhotoCell: View {
+    @ObservedObject var photoCollection: PhotoCollection
     @State var asset: PhotoAsset
     var cache: CachedImageManager?
     @State private var image: Image?
@@ -95,43 +223,6 @@ struct PhotoView: View {
                 dragVertical = false
             }
         )
-        .ignoresSafeArea()
-        .navigationTitle("照片")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden()
-        .toolbar(content: {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Label("Delete", systemImage: "chevron.left")
-                        .font(.system(size: 17, weight: .medium))
-                        .foregroundColor(Color.primary)
-                }
-            }
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    undoManager?.undo()
-                } label: {
-                    Label("Delete", systemImage: "arrow.counterclockwise.circle")
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(Color.primary)
-                }
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink {
-                    TrashCollectionView(photoCollection: photoCollection)
-                } label: {
-                    Label("Delete", systemImage: "trash")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(Color.primary)
-                }
-            }
-        })
-        .overlay(alignment: .bottom) {
-            buttonsView()
-                .offset(x: 0, y: -50)
-        }
         .task {
             guard image == nil, let cache = cache else { return }
             imageRequestID = await cache.requestImage(for: asset, targetSize: imageSize) { result in
@@ -143,40 +234,9 @@ struct PhotoView: View {
             }
         }
     }
-    
-    private func buttonsView() -> some View {
-        HStack(spacing: 60) {
-            Button {
-                Task {
-                    await asset.setIsFavorite(!asset.isFavorite)
-//                    await reloadPhoto()
-                }
-            } label: {
-                Label("Favorite", systemImage: asset.isFavorite ? "heart.fill" : "heart")
-                    .font(.system(size: 24))
-            }
-
-            Button {
-                Task {
-                    await asset.delete()
-                    await MainActor.run {
-                        dismiss()
-                    }
-                }
-            } label: {
-                Label("Delete", systemImage: "trash")
-                    .font(.system(size: 24))
-            }
-        }
-        .buttonStyle(.plain)
-        .labelStyle(.iconOnly)
-        .padding(EdgeInsets(top: 20, leading: 30, bottom: 20, trailing: 30))
-        .background(Color.secondary.colorInvert())
-        .cornerRadius(15)
-    }
 }
 
-private extension PhotoView {
+private extension PhotoCell {
     func showPrevPhoto() async {
         guard let cache = cache, index > 0 else { return }
         let tempIndex = index
